@@ -1,0 +1,13 @@
+# Publishes the TFP Vantage product page with GitLab Pages: every push to the default branch copies the site
+# (index.html and assets/) into "public", which GitLab Pages serves. Takes a few seconds.
+pages:
+  image: alpine:3.20
+  stage: deploy
+  script:
+    - mkdir -p public
+    - cp -r index.html assets public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
