@@ -9,6 +9,7 @@
 <!-- The live demo's address. Empty until the public address is set up: the "Try it now" buttons then ask for a demo by email. -->
 <meta name="demo-url" content="https://archlinux.taila38d1a.ts.net:10000/sapb1/try">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<script>try { const t = localStorage.getItem("tfpv-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}</script>
 <style>
 :root {
   --lime: #8bc53f; --lime-hover: #7ab22f; --lime-deep: #6fa52a; --on-lime: #1a2b08;
@@ -16,13 +17,22 @@
   --bg: #f6f7f2; --surface: #ffffff; --tint: #eef3e4; --text: #1b1f17; --label: #4d5545; --muted: #636b5a; --line: #dde2d3;
   --grid: rgba(30,42,20,.06); --hill: #dde8cc; --hill2: #cbdcb2; --shadow: 0 1px 2px rgba(30,42,20,.06), 0 12px 32px rgba(30,42,20,.10);
 }
+/* dark: the device's setting, unless the visitor picked light or dark with the button (data-theme on <html>) */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --brand: #9bd150; --brand-hover: #b4e27e; --on-lime: #14200a;
     --bg: #14180f; --surface: #1b2016; --tint: #1f2618; --text: #eef1e8; --label: #bcc3b2; --muted: #9aa290; --line: #313a29;
     --grid: rgba(255,255,255,.045); --hill: #26301c; --hill2: #2f3d24; --shadow: 0 12px 32px rgba(0,0,0,.45);
   }
 }
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --brand: #9bd150; --brand-hover: #b4e27e; --on-lime: #14200a;
+    --bg: #14180f; --surface: #1b2016; --tint: #1f2618; --text: #eef1e8; --label: #bcc3b2; --muted: #9aa290; --line: #313a29;
+    --grid: rgba(255,255,255,.045); --hill: #26301c; --hill2: #2f3d24; --shadow: 0 12px 32px rgba(0,0,0,.45);
+}
+:root[data-theme="light"] { color-scheme: light; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -40,7 +50,7 @@ a:hover { color: var(--brand-hover); }
 .top { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line); }
 .top .wrap { display: flex; align-items: center; gap: 1.5rem; height: 4rem; }
-.logo { display: flex; align-items: center; gap: .625rem; min-height: 2.75rem; font-weight: 700; font-size: 1.125rem; color: var(--text); text-decoration: none; }
+.logo { display: flex; align-items: center; gap: .625rem; min-height: 2.75rem; white-space: nowrap; font-weight: 700; font-size: 1.125rem; color: var(--text); text-decoration: none; }
 .logo svg { width: 2rem; height: 2rem; }
 .mk .pt { fill: currentColor; } .mk .pd { fill: var(--lime); }
 .top nav { display: flex; gap: 1.25rem; margin-left: auto; }
@@ -63,6 +73,12 @@ footer .made img { height: 1.5rem; width: auto; }
 .btn.sec { background: transparent; color: var(--text); border-color: var(--line); }
 .btn.sec:hover { border-color: var(--lime-deep); color: var(--text); }
 .top .btn { min-height: 2.5rem; padding: 0 1rem; font-size: .9375rem; }
+.theme { flex: none; width: 2.75rem; height: 2.75rem; display: grid; place-items: center; border: 1px solid var(--line); border-radius: .25rem;
+  background: transparent; color: var(--text); cursor: pointer; }
+.theme:hover { border-color: var(--lime-deep); }
+.theme svg { width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.theme .sun { display: none; }
+.dark-on .theme .sun { display: block; } .dark-on .theme .moon { display: none; }
 .arrow::after { content: "→"; font-weight: 400; }
 
 /* ---------- hero ---------- */
@@ -177,7 +193,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
   .strip ul { grid-template-columns: 1fr 1fr; }
   .top nav { display: none; }
   .top .by span { display: none; }
-  .top .btn { margin-left: auto; }
+  .top .theme { margin-left: auto; }
 }
 @media (max-width: 640px) {
   .wrap, .strip ul { padding-left: 1rem; padding-right: 1rem; }
@@ -185,6 +201,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
   .grid3, .steps, .sec-grid { grid-template-columns: 1fr; }
   .phones { grid-template-columns: 1fr 1fr; }
   .cta .btn { flex: 1 1 100%; }
+  .top .by { display: none; }
   .tabs { flex-wrap: nowrap; overflow-x: auto; }
   .tabs button { white-space: nowrap; }
 }
@@ -218,6 +235,10 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
     <nav aria-label="Sections">
       <a href="#video">Video</a><a href="#features">Features</a><a href="#see">See it</a><a href="#how">How it works</a><a href="#security">Security</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
     </nav>
+    <button type="button" class="theme" id="theme" aria-label="Switch to dark mode">
+      <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    </button>
     <a class="btn pri try" href="#contact">Try it now</a>
   </div>
 </header>
@@ -241,7 +262,8 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
     </div>
     <div class="shot">
       <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
-      <img src="assets/img/02-chart-960.webp" srcset="assets/img/02-chart-960.webp 960w, assets/img/02-chart.webp 1440w" sizes="(max-width: 960px) 100vw, 640px"
+      <img class="themed" src="assets/img/02-chart-960.webp" srcset="assets/img/02-chart-960.webp 960w, assets/img/02-chart.webp 1440w" sizes="(max-width: 960px) 100vw, 640px"
+           data-dark="assets/img/02-chart-dark-960.webp 960w, assets/img/02-chart-dark.webp 1440w"
            width="960" height="600" alt="TFP Vantage answering 'Show me a chart of our monthly sales this year' with a bar chart of net sales by month and a short summary">
     </div>
   </div>
@@ -444,6 +466,25 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
     else { a.href = mail; if (!a.closest(".contact")) a.textContent = "Ask for a demo"; }
   });
   if (!demo) document.querySelectorAll(".try-note").forEach((n) => n.textContent = "We'll show you the live demo on SAP's public sample company, OEC Computers.");
+})();
+// light / dark button: starts from the device's setting; the visitor's choice is remembered
+(() => {
+  const html = document.documentElement, btn = document.getElementById("theme"), mq = matchMedia("(prefers-color-scheme: dark)");
+  const dark = () => html.dataset.theme ? html.dataset.theme === "dark" : mq.matches;
+  const show = () => {
+    const d = dark(); html.classList.toggle("dark-on", d); btn.setAttribute("aria-label", d ? "Switch to light mode" : "Switch to dark mode");
+    // screenshots with a dark version follow the theme
+    document.querySelectorAll("img.themed").forEach((im) => {
+      if (!im.dataset.light) im.dataset.light = im.getAttribute("srcset");
+      im.setAttribute("srcset", d ? im.dataset.dark : im.dataset.light);
+    });
+  };
+  btn.addEventListener("click", () => {
+    html.dataset.theme = dark() ? "light" : "dark";
+    try { localStorage.setItem("tfpv-theme", html.dataset.theme); } catch (e) {}
+    show();
+  });
+  mq.addEventListener("change", show); show();
 })();
 // screen tabs: click, or arrow keys between tabs
 (() => {
