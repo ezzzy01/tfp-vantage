@@ -41,7 +41,7 @@ it again (or commit and push). GitLab republishes the page by itself within a mi
 |---|---|
 | The live demo address ("Try it now") | `<meta name="demo-url" content="...">` near the top. Empty = the buttons become "Ask for a demo" by email |
 | Contact email | `idham.hakim@tfp.com.my` (it appears in several places: change them all) |
-| Prices | `RM 90`, `RM 1,000`, `RM 3,000` (pricing section and the FAQ answer "How much does it cost?") |
+| Prices | `RM 90`, `RM 2,500`, `RM 3,000` (pricing section, the note under the plans, and the FAQ answer "How much does it cost?") |
 | Plan details | `<div class="plan` (one block per plan) |
 | Questions and answers | `<details>` (one block per question) |
 | Screenshots | Replace the files in `assets/img/` with new ones of the same name and size (1440 x 900) |
