@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>TFP Vantage · AI assistant for SAP Business One</title>
+<meta name="description" content="Ask about sales, stock, customers and money in plain words, in English or Bahasa Malaysia, and get answers, charts and Excel files from your own SAP Business One data. Read-only.">
+<!-- The live demo's address. Empty until the public address is set up: the "Try it now" buttons then ask for a demo by email. -->
+<meta name="demo-url" content="">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<style>
+:root {
+  --lime: #8bc53f; --lime-hover: #7ab22f; --lime-deep: #6fa52a; --on-lime: #1a2b08;
+  --brand: #4a7a16; --brand-hover: #3d6612;
+  --bg: #f6f7f2; --surface: #ffffff; --tint: #eef3e4; --text: #1b1f17; --label: #4d5545; --muted: #636b5a; --line: #dde2d3;
+  --grid: rgba(30,42,20,.06); --hill: #dde8cc; --hill2: #cbdcb2; --shadow: 0 1px 2px rgba(30,42,20,.06), 0 12px 32px rgba(30,42,20,.10);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --brand: #9bd150; --brand-hover: #b4e27e; --on-lime: #14200a;
+    --bg: #14180f; --surface: #1b2016; --tint: #1f2618; --text: #eef1e8; --label: #bcc3b2; --muted: #9aa290; --line: #313a29;
+    --grid: rgba(255,255,255,.045); --hill: #26301c; --hill2: #2f3d24; --shadow: 0 12px 32px rgba(0,0,0,.45);
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 1.0625rem/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; display: block; }
+a { color: var(--brand); }
+a:hover { color: var(--brand-hover); }
+:focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
+.wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+.skip { position: absolute; left: -999px; top: .5rem; background: var(--surface); padding: .5rem 1rem; z-index: 10; }
+.skip:focus { left: .5rem; }
+
+/* ---------- top bar ---------- */
+.top { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 1.5rem; height: 4rem; }
+.logo { display: flex; align-items: center; gap: .625rem; min-height: 2.75rem; font-weight: 700; font-size: 1.125rem; color: var(--text); text-decoration: none; }
+.logo svg { width: 2rem; height: 2rem; }
+.mk .pt { fill: currentColor; } .mk .pd { fill: var(--lime); }
+.top nav { display: flex; gap: 1.25rem; margin-left: auto; }
+.top nav a { color: var(--label); text-decoration: none; font-size: .9375rem; padding: .5rem 0; }
+.top nav a:hover { color: var(--text); }
+
+.btn { display: inline-flex; align-items: center; gap: .5rem; justify-content: center; min-height: 3rem; padding: 0 1.375rem; border-radius: .25rem;
+  font: inherit; font-weight: 700; text-decoration: none; white-space: nowrap; border: 1px solid transparent; cursor: pointer; }
+.btn.pri { background: var(--lime); color: var(--on-lime); }
+.btn.pri:hover { background: var(--lime-hover); color: var(--on-lime); }
+.btn.sec { background: transparent; color: var(--text); border-color: var(--line); }
+.btn.sec:hover { border-color: var(--lime-deep); color: var(--text); }
+.top .btn { min-height: 2.5rem; padding: 0 1rem; font-size: .9375rem; }
+.arrow::after { content: "→"; font-weight: 400; }
+
+/* ---------- hero ---------- */
+.hero { position: relative; overflow: hidden; background: var(--tint);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 48px 48px;
+  border-bottom: 1px solid var(--line); }
+.hero .view { position: absolute; inset: auto 0 0 0; width: 100%; height: 70%; }
+.hero .hill1 { fill: var(--hill); } .hero .hill2 { fill: var(--hill2); }
+.hero .path { fill: none; stroke: var(--lime-deep); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.hero .dot { fill: var(--surface); stroke: var(--lime-deep); stroke-width: 2.5; }
+.hero .peak { fill: var(--lime); }
+.hero .wrap { position: relative; display: grid; grid-template-columns: 1fr 1.15fr; gap: 3rem; align-items: center; padding-top: 4.5rem; padding-bottom: 4.5rem; }
+.eyebrow { display: inline-flex; align-items: center; gap: .5rem; font-size: .8125rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brand); }
+.eyebrow::before { content: ""; width: 2rem; height: .25rem; background: var(--lime); }
+h1 { font-size: clamp(2.25rem, 4.6vw, 3.5rem); line-height: 1.08; letter-spacing: -.025em; margin: 1rem 0 1.25rem; }
+.lead { font-size: 1.1875rem; color: var(--label); margin: 0 0 2rem; max-width: 34rem; }
+.cta { display: flex; gap: .75rem; flex-wrap: wrap; }
+.note { font-size: .9375rem; color: var(--muted); margin-top: 1rem; }
+.shot { background: var(--surface); border: 1px solid var(--line); border-radius: .375rem; box-shadow: var(--shadow); overflow: hidden; }
+.shot .bar { display: flex; gap: .375rem; padding: .5rem .75rem; border-bottom: 1px solid var(--line); }
+.shot .bar i { width: .625rem; height: .625rem; border-radius: 50%; background: var(--line); }
+
+/* ---------- strip ---------- */
+.strip { border-bottom: 1px solid var(--line); background: var(--surface); }
+.strip ul { list-style: none; margin: 0 auto; padding: 1.25rem 1.5rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.strip li { display: flex; align-items: center; gap: .625rem; font-weight: 600; font-size: .9375rem; }
+.strip svg { width: 1.25rem; height: 1.25rem; color: var(--lime-deep); flex: none; }
+
+/* ---------- sections ---------- */
+section { padding: 5rem 0; }
+section.alt { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+h2 { font-size: clamp(1.75rem, 3vw, 2.375rem); line-height: 1.15; letter-spacing: -.02em; margin: .75rem 0 1rem; }
+.intro { color: var(--label); max-width: 40rem; margin: 0 0 2.5rem; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: .25rem; padding: 1.5rem; }
+section.alt .card { background: var(--bg); }
+.card h3 { margin: 0 0 .5rem; font-size: 1.125rem; display: flex; align-items: center; gap: .625rem; }
+.card h3 svg { width: 1.375rem; height: 1.375rem; color: var(--lime-deep); flex: none; }
+.card p { margin: 0 0 .75rem; color: var(--label); font-size: 1rem; }
+.card ul { margin: 0; padding-left: 1.125rem; color: var(--label); font-size: 1rem; }
+.card li { margin: .25rem 0; }
+.qs { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: .5rem; }
+.qs span { background: var(--tint); border: 1px solid var(--line); border-radius: 999px; padding: .375rem .875rem; font-size: .9375rem; }
+
+/* ---------- gallery ---------- */
+.tabs { display: flex; gap: .25rem; flex-wrap: wrap; margin-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
+.tabs button { font: inherit; font-size: .9375rem; font-weight: 600; color: var(--label); background: none; border: 0; border-bottom: 3px solid transparent;
+  padding: .75rem 1rem; cursor: pointer; min-height: 2.75rem; }
+.tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--lime); }
+.tabs button:hover { color: var(--text); }
+.panel[hidden] { display: none; }
+.panel figure { margin: 0; }
+.panel figcaption { color: var(--label); margin-top: 1rem; font-size: 1rem; }
+.phones { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+.phones img { border: 1px solid var(--line); border-radius: 1.25rem; box-shadow: var(--shadow); }
+
+/* ---------- steps ---------- */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; counter-reset: s; }
+.steps li { counter-increment: s; border-top: 3px solid var(--lime); padding-top: 1.25rem; }
+.steps li::before { content: "0" counter(s); display: block; font-weight: 700; color: var(--brand); font-size: .9375rem; margin-bottom: .5rem; }
+.steps b { display: block; font-size: 1.125rem; margin-bottom: .375rem; }
+.steps span { color: var(--label); }
+
+/* ---------- security ---------- */
+.sec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.sec-grid .card p { margin: 0; }
+
+/* ---------- FAQ ---------- */
+.faq { max-width: 48rem; }
+details { border-bottom: 1px solid var(--line); }
+summary { cursor: pointer; padding: 1.125rem 0; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; color: var(--brand); font-size: 1.375rem; line-height: 1; }
+details[open] summary::after { content: "–"; }
+details p { margin: 0 0 1.25rem; color: var(--label); }
+
+/* ---------- contact ---------- */
+.contact { background: var(--forest, #1e2a14); color: #eef1e8; position: relative; overflow: hidden; }
+.contact h2 { color: #fff; }
+.contact p { color: #c9d1bf; max-width: 36rem; }
+.contact .wrap { display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap; }
+.contact a.mail { color: #b4e27e; font-weight: 600; word-break: break-all; }
+footer { padding: 2rem 0; color: var(--muted); font-size: .875rem; }
+footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+
+/* ---------- smaller screens ---------- */
+@media (max-width: 960px) {
+  .hero .wrap { grid-template-columns: 1fr; padding-top: 3rem; padding-bottom: 3rem; }
+  .grid3, .steps { grid-template-columns: 1fr 1fr; }
+  .strip ul { grid-template-columns: 1fr 1fr; }
+  .top nav { display: none; }
+  .top .btn { margin-left: auto; }
+}
+@media (max-width: 640px) {
+  .wrap, .strip ul { padding-left: 1rem; padding-right: 1rem; }
+  section { padding: 3.5rem 0; }
+  .grid3, .steps, .sec-grid { grid-template-columns: 1fr; }
+  .phones { grid-template-columns: 1fr 1fr; }
+  .cta .btn { flex: 1 1 100%; }
+  .tabs { flex-wrap: nowrap; overflow-x: auto; }
+  .tabs button { white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- Icons: Lucide (ISC licence, lucide.dev) -->
+  <symbol id="i-lang" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></g></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 6h.01M6 18h.01"/></g></symbol>
+  <symbol id="i-sheet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2M14 13h2M8 17h2M14 17h2"/></g></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></g></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></g></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12M3.29 7 12 12l8.71-5"/></g></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9M13 17V5M8 17v-3"/></g></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></g></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65M22 12.65l-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></g></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="TFP Vantage, back to the top">
+      <svg class="mk" viewBox="0 0 48 48" aria-hidden="true"><polygon class="pt" points="4,8 14,8 24,33 34,8 44,8 29,44 19,44"/><polygon class="pd" points="24,3 29.5,9.5 24,16 18.5,9.5"/></svg>
+      TFP Vantage
+    </a>
+    <nav aria-label="Sections">
+      <a href="#features">Features</a><a href="#see">See it</a><a href="#how">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn pri try" href="#contact">Try it now</a>
+  </div>
+</header>
+
+<main id="main">
+<div class="hero" id="top">
+  <svg class="view" viewBox="0 0 1200 400" preserveAspectRatio="none" aria-hidden="true">
+    <path class="hill1" d="M0 300 C200 260 340 280 500 240 S800 140 1000 110 S1150 90 1200 88 V400 H0Z"/>
+    <path class="hill2" d="M0 360 C240 330 460 345 640 315 S980 270 1200 250 V400 H0Z"/>
+  </svg>
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">AI assistant for SAP Business One</span>
+      <h1>Your SAP Business One data, answered in plain words.</h1>
+      <p class="lead">Ask about sales, stock, customers and money in English or Bahasa Malaysia. TFP Vantage looks it up in your own B1 data and replies with figures, tables, charts and Excel files. It only reads; it never changes anything in SAP.</p>
+      <div class="cta">
+        <a class="btn pri arrow try" href="#contact">Try it now</a>
+        <a class="btn sec" href="#see">See the screens</a>
+      </div>
+      <p class="note try-note">The live demo uses SAP's public sample company, OEC Computers.</p>
+    </div>
+    <div class="shot">
+      <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+      <img src="assets/img/02-chart-960.webp" srcset="assets/img/02-chart-960.webp 960w, assets/img/02-chart.webp 1440w" sizes="(max-width: 960px) 100vw, 640px"
+           width="960" height="600" alt="TFP Vantage answering 'Show me a chart of our monthly sales this year' with a bar chart of net sales by month and a short summary">
+    </div>
+  </div>
+</div>
+
+<div class="strip">
+  <ul class="wrap">
+    <li><svg aria-hidden="true"><use href="#i-lang"/></svg>English and Bahasa Malaysia</li>
+    <li><svg aria-hidden="true"><use href="#i-shield"/></svg>Read-only access to SAP</li>
+    <li><svg aria-hidden="true"><use href="#i-server"/></svg>Runs on your own server</li>
+    <li><svg aria-hidden="true"><use href="#i-sheet"/></svg>Excel files in one click</li>
+  </ul>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <span class="eyebrow">Features</span>
+    <h2>The everyday questions, answered well.</h2>
+    <p class="intro">TFP Vantage covers what managers ask every day about sales, stock, customers, suppliers and money, with answers taken live from B1.</p>
+    <div class="grid3">
+      <div class="card"><h3><svg aria-hidden="true"><use href="#i-trend"/></svg>Sales</h3>
+        <ul><li>Sales analysis and sales history</li><li>This period against last</li><li>Customer insights: growing, slowing, at risk</li><li>Product profitability and margins</li><li>Open sales orders</li></ul></div>
+      <div class="card"><h3><svg aria-hidden="true"><use href="#i-wallet"/></svg>Money</h3>
+        <ul><li>Who owes us, and how late</li><li>Overdue invoices per customer</li><li>Profit and loss</li></ul></div>
+      <div class="card"><h3><svg aria-hidden="true"><use href="#i-box"/></svg>Stock</h3>
+        <ul><li>On hand, committed and on order</li><li>Items below their B1 minimum</li><li>Inventory health: slow and dead stock</li><li>Stock value</li><li>Open purchase orders</li></ul></div>
+      <div class="card"><h3><svg aria-hidden="true"><use href="#i-search"/></svg>Look-ups</h3>
+        <ul><li>Customer, supplier and item pages</li><li>Any sales or purchase document</li><li>"Where is this in B1?" guide</li></ul></div>
+      <div class="card"><h3><svg aria-hidden="true"><use href="#i-chart"/></svg>Charts and files</h3>
+        <ul><li>Sales trend and top-10 charts</li><li>Stock and receivables charts</li><li>Excel downloads of tables and reports</li><li>A dashboard with this year's key figures</li></ul></div>
+      <div class="card"><h3><svg aria-hidden="true"><use href="#i-users"/></svg>For the whole team</h3>
+        <ul><li>Saved chats and file attachments</li><li>Sign-in per person, with roles: sales, purchasing, finance, warehouse</li><li>Works on phones too</li></ul></div>
+    </div>
+    <div class="qs" aria-label="Example questions">
+      <span>Who owes us the most overdue money?</span><span>Who are our top 10 customers this year?</span><span>Which items are below their minimum stock?</span>
+      <span>How are sales this year compared with last year?</span><span>Which sales orders are late to deliver?</span><span>Berapa jualan bulan lepas?</span>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="see">
+  <div class="wrap">
+    <span class="eyebrow">See it</span>
+    <h2>Real screens, from SAP's sample company.</h2>
+    <p class="intro">Every screen below is TFP Vantage answering questions about OEC Computers, the demo company that comes with SAP Business One.</p>
+    <div class="tabs" role="tablist" aria-label="Screens">
+      <button role="tab" id="t1" aria-controls="p1" aria-selected="true">Answers</button>
+      <button role="tab" id="t2" aria-controls="p2" aria-selected="false" tabindex="-1">Dashboard</button>
+      <button role="tab" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1">Customer page</button>
+      <button role="tab" id="t4" aria-controls="p4" aria-selected="false" tabindex="-1">Business data</button>
+      <button role="tab" id="t5" aria-controls="p5" aria-selected="false" tabindex="-1">Dark mode</button>
+      <button role="tab" id="t6" aria-controls="p6" aria-selected="false" tabindex="-1">On a phone</button>
+    </div>
+    <div class="panel" role="tabpanel" id="p1" aria-labelledby="t1"><figure class="shot">
+      <img loading="lazy" src="assets/img/03-top-customers-960.webp" srcset="assets/img/03-top-customers-960.webp 960w, assets/img/03-top-customers.webp 1440w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
+           alt="An answer listing the top 10 customers this year with net sales, share and amount still to be paid">
+      </figure><p class="note">"Who are our top 10 customers this year?" The table, the share of sales and what each still owes, with a suggested next step.</p></div>
+    <div class="panel" role="tabpanel" id="p2" aria-labelledby="t2" hidden><figure class="shot">
+      <img loading="lazy" src="assets/img/05-dashboard-960.webp" srcset="assets/img/05-dashboard-960.webp 960w, assets/img/05-dashboard.webp 1440w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
+           alt="The dashboard: sales, gross profit, invoices, customers who owe, open sales and purchase orders, sales by month and top customers">
+      </figure><p class="note">This year's key figures at a glance, with a question box to ask about any of them.</p></div>
+    <div class="panel" role="tabpanel" id="p3" aria-labelledby="t3" hidden><figure class="shot">
+      <img loading="lazy" src="assets/img/07-customer-960.webp" srcset="assets/img/07-customer-960.webp 960w, assets/img/07-customer.webp 1440w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
+           alt="A customer page: sales this year and last, what they owe and how late, the last 12 months and unpaid invoices">
+      </figure><p class="note">One page per customer: what they buy, what they owe and how late, and unpaid invoices. "Ask AI about this customer" in one click.</p></div>
+    <div class="panel" role="tabpanel" id="p4" aria-labelledby="t4" hidden><figure class="shot">
+      <img loading="lazy" src="assets/img/06-customers-960.webp" srcset="assets/img/06-customers-960.webp 960w, assets/img/06-customers.webp 1440w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
+           alt="The customer list with sales this year, balance, overdue amount, open orders and last document date">
+      </figure><p class="note">Customers, suppliers, items and documents in searchable lists, each with an Excel download.</p></div>
+    <div class="panel" role="tabpanel" id="p5" aria-labelledby="t5" hidden><figure class="shot">
+      <img loading="lazy" src="assets/img/05-dashboard-dark-960.webp" srcset="assets/img/05-dashboard-dark-960.webp 960w, assets/img/05-dashboard-dark.webp 1440w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
+           alt="The dashboard in dark mode">
+      </figure><p class="note">Light or dark, following the device or chosen in Settings.</p></div>
+    <div class="panel" role="tabpanel" id="p6" aria-labelledby="t6" hidden>
+      <div class="phones">
+        <img loading="lazy" src="assets/img/02-chart-phone.webp" width="390" height="844" alt="A sales chart answer on a phone">
+        <img loading="lazy" src="assets/img/04-overdue-phone.webp" width="390" height="844" alt="An overdue money answer on a phone">
+        <img loading="lazy" src="assets/img/05-dashboard-phone.webp" width="390" height="844" alt="The dashboard on a phone">
+        <img loading="lazy" src="assets/img/07-customer-phone.webp" width="390" height="844" alt="A customer page on a phone">
+      </div><p class="note">The same app on a phone, nothing to install.</p></div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <span class="eyebrow">How it works</span>
+    <h2>Set up next to your B1.</h2>
+    <p class="intro">TFP Vantage sits next to your SAP Business One and reads from it. Nothing in B1 is changed and nothing needs to be re-typed.</p>
+    <ol class="steps">
+      <li><b>Connect, read-only</b><span>A read-only SQL login that can open only your company's B1 database. Your data is copied each night for fast answers; some answers, like item stock, are read live.</span></li>
+      <li><b>Ask in plain words</b><span>Type a question the way you would ask a colleague, in English or Bahasa Malaysia, on a PC or a phone.</span></li>
+      <li><b>Get the answer</b><span>Figures, tables and charts with a short explanation and a next step, and Excel files to share.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="alt" id="security">
+  <div class="wrap">
+    <span class="eyebrow">Security</span>
+    <h2>Your data stays yours.</h2>
+    <p class="intro">Built for finance and sales data from the start.</p>
+    <div class="sec-grid">
+      <div class="card"><h3><svg aria-hidden="true"><use href="#i-shield"/></svg>Read-only</h3><p>It uses a SQL login that can only read. It can't post, change or delete anything in SAP Business One.</p></div>
+      <div class="card"><h3><svg aria-hidden="true"><use href="#i-server"/></svg>On your own server</h3><p>The AI model runs on your server. Your B1 data isn't sent to outside AI services.</p></div>
+      <div class="card"><h3><svg aria-hidden="true"><use href="#i-lock"/></svg>Sign-in and roles</h3><p>Each person signs in. Roles decide what they see: sales, purchasing, finance or warehouse.</p></div>
+      <div class="card"><h3><svg aria-hidden="true"><use href="#i-layers"/></svg>Companies kept apart</h3><p>Several B1 companies can share one sign-in page, but each has its own login, data and chats.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap"><div class="faq">
+    <span class="eyebrow">FAQ</span>
+    <h2>Questions people ask.</h2>
+    <details><summary>Which SAP Business One does it work with?</summary><p>SAP Business One on Microsoft SQL Server. Ask us about your version.</p></details>
+    <details><summary>Can it change anything in SAP?</summary><p>No. It reads only, through a SQL login that has no permission to write.</p></details>
+    <details><summary>How up to date are the answers?</summary><p>Your B1 data is refreshed every night, and the app shows how old the figures are. Some answers, such as an item's stock, are read live.</p></details>
+    <details><summary>Does it understand Bahasa Malaysia?</summary><p>Yes. Ask in English or Bahasa Malaysia; it answers in the language you used.</p></details>
+    <details><summary>Can I try it first?</summary><p>Yes. The live demo uses SAP's public sample company, OEC Computers, so you can ask real questions before connecting your own data.</p></details>
+    <details><summary>How much does it cost?</summary><p>It depends on the number of companies and users. Get in touch and we'll send a quote.</p></details>
+  </div></div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Get in touch</span>
+      <h2>See it with your own B1 data.</h2>
+      <p>Ask for a demo or a quote. Email <a class="mail" href="mailto:idham.hakim@tfp.com.my?subject=TFP%20Vantage">idham.hakim@tfp.com.my</a></p>
+    </div>
+    <div class="cta">
+      <a class="btn pri arrow try" href="mailto:idham.hakim@tfp.com.my?subject=TFP%20Vantage%20demo">Ask for a demo</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>TFP Vantage · AI assistant for SAP Business One</span>
+    <span>Screens show SAP's public sample company, OEC Computers. SAP and SAP Business One are trademarks of SAP SE.</span>
+  </div>
+</footer>
+
+<script>
+// "Try it now": the live demo when its address is set (meta demo-url), otherwise ask for a demo by email
+(() => {
+  const demo = (document.querySelector('meta[name="demo-url"]') || {}).content || "";
+  const mail = "mailto:idham.hakim@tfp.com.my?subject=TFP%20Vantage%20demo";
+  document.querySelectorAll("a.try").forEach((a) => {
+    if (demo) { a.href = demo; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Try it now"; }
+    else { a.href = mail; if (!a.closest(".contact")) a.textContent = "Ask for a demo"; }
+  });
+  if (!demo) document.querySelectorAll(".try-note").forEach((n) => n.textContent = "We'll show you the live demo on SAP's public sample company, OEC Computers.");
+})();
+// screen tabs: click, or arrow keys between tabs
+(() => {
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  const pick = (t, focus) => {
+    tabs.forEach((x) => { const on = x === t; x.setAttribute("aria-selected", on); x.tabIndex = on ? 0 : -1;
+      document.getElementById(x.getAttribute("aria-controls")).hidden = !on; });
+    if (focus) t.focus();
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener("click", () => pick(t));
+    t.addEventListener("keydown", (e) => {
+      const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (!d) return;
+      e.preventDefault(); pick(tabs[(i + d + tabs.length) % tabs.length], true);
+    });
+  });
+})();
+</script>
+</body>
+</html>
