@@ -44,6 +44,15 @@ a:hover { color: var(--brand-hover); }
 .logo svg { width: 2rem; height: 2rem; }
 .mk .pt { fill: currentColor; } .mk .pd { fill: var(--lime); }
 .top nav { display: flex; gap: 1.25rem; margin-left: auto; }
+.by { display: flex; align-items: center; gap: .375rem; font-size: .875rem; color: var(--muted); padding-left: 1rem; border-left: 1px solid var(--line); white-space: nowrap; }
+.by .tfpd { height: 1.75rem; width: auto; }
+.by span { font-weight: 600; color: var(--label); }
+.maker { display: flex; align-items: center; gap: .875rem; margin-top: 1.5rem; }
+.maker img { height: 3.5rem; width: auto; }
+.maker p { margin: 0; color: #c9d1bf; font-size: .9375rem; }
+.maker b { color: #fff; }
+footer .made { display: flex; align-items: center; gap: .5rem; }
+footer .made img { height: 1.5rem; width: auto; }
 .top nav a { color: var(--label); text-decoration: none; font-size: .9375rem; padding: .5rem 0; }
 .top nav a:hover { color: var(--text); }
 
@@ -121,6 +130,27 @@ section.alt .card { background: var(--bg); }
 .sec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
 .sec-grid .card p { margin: 0; }
 
+/* ---------- video ---------- */
+.shot.video video { display: block; width: 100%; height: auto; background: #000; aspect-ratio: 16 / 9; }
+
+/* ---------- pricing ---------- */
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: stretch; }
+.plan { display: flex; flex-direction: column; gap: 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: .25rem; padding: 1.75rem 1.5rem; }
+section.alt .plan { background: var(--bg); }
+.plan.hl { border: 2px solid var(--lime); box-shadow: var(--shadow); }
+.plan .tag { align-self: flex-start; font-size: .8125rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: .25rem .625rem;
+  background: var(--lime); color: var(--on-lime); border-radius: .25rem; }
+.plan h3 { margin: 0; font-size: 1.25rem; }
+.plan .for { margin: -.5rem 0 0; color: var(--muted); font-size: .9375rem; }
+.price { display: flex; align-items: baseline; gap: .375rem; flex-wrap: wrap; }
+.price b { font-size: 2.25rem; line-height: 1.1; letter-spacing: -.02em; }
+.price span { color: var(--label); font-size: .9375rem; }
+.plan ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; flex: 1; align-content: start; }
+.plan li { display: flex; gap: .625rem; color: var(--label); font-size: 1rem; }
+.plan li::before { content: ""; flex: none; width: .5rem; height: .5rem; margin-top: .55rem; background: var(--lime-deep); transform: rotate(45deg); }
+.plan .btn { width: 100%; }
+.plans-note { margin: 1.5rem 0 0; color: var(--label); font-size: 1rem; }
+
 /* ---------- FAQ ---------- */
 .faq { max-width: 48rem; }
 details { border-bottom: 1px solid var(--line); }
@@ -143,8 +173,10 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
 @media (max-width: 960px) {
   .hero .wrap { grid-template-columns: 1fr; padding-top: 3rem; padding-bottom: 3rem; }
   .grid3, .steps { grid-template-columns: 1fr 1fr; }
+  .plans { grid-template-columns: 1fr; max-width: 34rem; }
   .strip ul { grid-template-columns: 1fr 1fr; }
   .top nav { display: none; }
+  .top .by span { display: none; }
   .top .btn { margin-left: auto; }
 }
 @media (max-width: 640px) {
@@ -182,8 +214,9 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
       <svg class="mk" viewBox="0 0 48 48" aria-hidden="true"><polygon class="pt" points="4,8 14,8 24,33 34,8 44,8 29,44 19,44"/><polygon class="pd" points="24,3 29.5,9.5 24,16 18.5,9.5"/></svg>
       TFP Vantage
     </a>
+    <span class="by">by <img class="tfpd" src="assets/brand/tfp-digital-96.png" srcset="assets/brand/tfp-digital-96.png 1x, assets/brand/tfp-digital-192.png 2x" width="27" height="28" alt="TFP Digital"><span>TFP Digital</span></span>
     <nav aria-label="Sections">
-      <a href="#features">Features</a><a href="#see">See it</a><a href="#how">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a>
+      <a href="#video">Video</a><a href="#features">Features</a><a href="#see">See it</a><a href="#how">How it works</a><a href="#security">Security</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
     </nav>
     <a class="btn pri try" href="#contact">Try it now</a>
   </div>
@@ -202,7 +235,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
       <p class="lead">Ask about sales, stock, customers and money in English or Bahasa Malaysia. TFP Vantage looks it up in your own B1 data and replies with figures, tables, charts and Excel files. It only reads; it never changes anything in SAP.</p>
       <div class="cta">
         <a class="btn pri arrow try" href="#contact">Try it now</a>
-        <a class="btn sec" href="#see">See the screens</a>
+        <a class="btn sec" href="#video">Watch the video</a>
       </div>
       <p class="note try-note">The live demo uses SAP's public sample company, OEC Computers.</p>
     </div>
@@ -223,7 +256,21 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
   </ul>
 </div>
 
-<section id="features">
+<section id="video">
+  <div class="wrap">
+    <span class="eyebrow">Video</span>
+    <h2>TFP Vantage in 90 seconds.</h2>
+    <p class="intro">Real questions on SAP's sample company: money owed, a sales chart, the biggest suppliers, the dashboard and a customer page.</p>
+    <div class="shot video">
+      <video controls playsinline preload="none" poster="assets/video/poster.jpg" width="1280" height="720"
+             aria-label="TFP Vantage showcase video, 1 minute 32 seconds, with captions on screen">
+        <source src="assets/video/tfp-vantage-720.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="features">
   <div class="wrap">
     <span class="eyebrow">Features</span>
     <h2>The everyday questions, answered well.</h2>
@@ -249,7 +296,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
   </div>
 </section>
 
-<section class="alt" id="see">
+<section id="see">
   <div class="wrap">
     <span class="eyebrow">See it</span>
     <h2>Real screens, from SAP's sample company.</h2>
@@ -292,7 +339,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
   </div>
 </section>
 
-<section id="how">
+<section class="alt" id="how">
   <div class="wrap">
     <span class="eyebrow">How it works</span>
     <h2>Set up next to your B1.</h2>
@@ -305,7 +352,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
   </div>
 </section>
 
-<section class="alt" id="security">
+<section id="security">
   <div class="wrap">
     <span class="eyebrow">Security</span>
     <h2>Your data stays yours.</h2>
@@ -319,6 +366,39 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
   </div>
 </section>
 
+<section class="alt" id="pricing">
+  <div class="wrap">
+    <span class="eyebrow">Pricing</span>
+    <h2>Simple pricing, per user.</h2>
+    <p class="intro">Every feature is included in every plan. You pay for the people who use it.</p>
+    <div class="plans">
+      <div class="plan hl">
+        <span class="tag">Most chosen</span>
+        <h3>On your server</h3>
+        <p class="for">For one company, on a PC or server you already have</p>
+        <div class="price"><b>RM 90</b><span>per user, a month</span></div>
+        <ul><li>Minimum 5 users</li><li>Runs on your own PC or server with a graphics card (GPU)</li><li>Your data stays in your building</li><li>Setup, training, updates and support</li></ul>
+        <a class="btn pri" href="mailto:idham.hakim@tfp.com.my?subject=TFP%20Vantage%3A%20on%20your%20server">Get started</a>
+      </div>
+      <div class="plan">
+        <h3>Hosted by us</h3>
+        <p class="for">For one company, with no server of your own</p>
+        <div class="price"><b>RM 1,000</b><span>a month + RM 90 per user</span></div>
+        <ul><li>Minimum 5 users</li><li>A private GPU server we run for you alone</li><li>Nothing to buy or maintain</li><li>Setup, training, updates and support</li></ul>
+        <a class="btn sec" href="mailto:idham.hakim@tfp.com.my?subject=TFP%20Vantage%3A%20hosted">Talk to us</a>
+      </div>
+      <div class="plan">
+        <h3>Enterprise</h3>
+        <p class="for">For groups, larger teams and special needs</p>
+        <div class="price"><b>Custom</b><span>pricing, quoted for you</span></div>
+        <ul><li>Several B1 companies behind one sign-in</li><li>Each company's own data, chats and AI instructions</li><li>Roles per person and per company</li><li>On your servers or hosted by us</li><li>Priority support and on-site training</li></ul>
+        <a class="btn sec" href="mailto:idham.hakim@tfp.com.my?subject=TFP%20Vantage%3A%20Enterprise">Talk to us</a>
+      </div>
+    </div>
+    <p class="plans-note">One-time setup from RM 3,000. Not sure which fits? Try the demo first, then we'll size it with you.</p>
+  </div>
+</section>
+
 <section id="faq">
   <div class="wrap"><div class="faq">
     <span class="eyebrow">FAQ</span>
@@ -328,7 +408,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
     <details><summary>How up to date are the answers?</summary><p>Your B1 data is refreshed every night, and the app shows how old the figures are. Some answers, such as an item's stock, are read live.</p></details>
     <details><summary>Does it understand Bahasa Malaysia?</summary><p>Yes. Ask in English or Bahasa Malaysia; it answers in the language you used.</p></details>
     <details><summary>Can I try it first?</summary><p>Yes. The live demo uses SAP's public sample company, OEC Computers, so you can ask real questions before connecting your own data.</p></details>
-    <details><summary>How much does it cost?</summary><p>It depends on the number of companies and users. Get in touch and we'll send a quote.</p></details>
+    <details><summary>How much does it cost?</summary><p>From RM 90 per user a month on your own server (minimum 5 users), plus a one-time setup from RM 3,000. Hosting by us, several companies or larger teams: see the plans above, or ask us for a quote.</p></details>
   </div></div>
 </section>
 
@@ -338,6 +418,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
       <span class="eyebrow">Get in touch</span>
       <h2>See it with your own B1 data.</h2>
       <p>Ask for a demo or a quote. Email <a class="mail" href="mailto:idham.hakim@tfp.com.my?subject=TFP%20Vantage">idham.hakim@tfp.com.my</a></p>
+      <div class="maker"><img class="tfpd" src="assets/brand/tfp-digital-96.png" srcset="assets/brand/tfp-digital-96.png 1x, assets/brand/tfp-digital-192.png 2x" width="54" height="56" alt="TFP Digital"><p>TFP Vantage is a product of<br><b>TFP Digital Sdn. Bhd.</b></p></div>
     </div>
     <div class="cta">
       <a class="btn pri arrow try" href="mailto:idham.hakim@tfp.com.my?subject=TFP%20Vantage%20demo">Ask for a demo</a>
@@ -348,7 +429,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
 
 <footer>
   <div class="wrap">
-    <span>TFP Vantage · AI assistant for SAP Business One</span>
+    <span class="made"><img class="tfpd" src="assets/brand/tfp-digital-96.png" srcset="assets/brand/tfp-digital-96.png 1x, assets/brand/tfp-digital-192.png 2x" width="23" height="24" alt="TFP Digital">TFP Vantage by TFP Digital Sdn. Bhd.</span>
     <span>Screens show SAP's public sample company, OEC Computers. SAP and SAP Business One are trademarks of SAP SE.</span>
   </div>
 </footer>
