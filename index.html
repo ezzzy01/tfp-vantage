@@ -151,20 +151,25 @@ section.alt .card { background: var(--bg); }
 .shot.video video { display: block; width: 100%; height: auto; background: #000; aspect-ratio: 16 / 9; }
 
 /* ---------- pricing ---------- */
-.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: stretch; }
-.plan { display: flex; flex-direction: column; gap: 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: .25rem; padding: 1.75rem 1.5rem; }
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: stretch; padding-top: .75rem; }
+.plan { position: relative; display: flex; flex-direction: column; gap: 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: .25rem; padding: 1.75rem 1.5rem; }
+@supports (grid-template-rows: subgrid) {
+  .plan { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 1rem; align-content: start; }
+}
 section.alt .plan { background: var(--bg); }
-.plan.hl { border: 2px solid var(--lime); box-shadow: var(--shadow); }
-.plan .tag { align-self: flex-start; font-size: .8125rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: .25rem .625rem;
+.plan.hl { border-color: var(--lime); box-shadow: 0 0 0 1px var(--lime), var(--shadow); }
+.plan .tag { position: absolute; top: 0; left: 1.5rem; transform: translateY(-50%); font-size: .8125rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: .25rem .625rem;
   background: var(--lime); color: var(--on-lime); border-radius: .25rem; }
 .plan h3 { margin: 0; font-size: 1.25rem; }
 .plan .for { margin: -.5rem 0 0; color: var(--muted); font-size: .9375rem; }
-.price { display: flex; align-items: baseline; gap: .375rem; flex-wrap: wrap; }
-.price b { font-size: 2.25rem; line-height: 1.1; letter-spacing: -.02em; }
+.price { display: grid; gap: .125rem; padding: .75rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.price small { color: var(--muted); font-size: .8125rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.price b { font-size: 2.25rem; line-height: 1.15; letter-spacing: -.02em; }
 .price span { color: var(--label); font-size: .9375rem; }
-.plan ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; flex: 1; align-content: start; }
+.plan ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; align-content: start; }
 .plan li { display: flex; gap: .625rem; color: var(--label); font-size: 1rem; }
 .plan li::before { content: ""; flex: none; width: .5rem; height: .5rem; margin-top: .55rem; background: var(--lime-deep); transform: rotate(45deg); }
+.plan > .btn { align-self: end; }
 .plan .btn { width: 100%; }
 .plans-note { margin: 1.5rem 0 0; color: var(--label); font-size: 1rem; }
 
@@ -190,7 +195,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
 @media (max-width: 960px) {
   .hero .wrap { grid-template-columns: 1fr; padding-top: 3rem; padding-bottom: 3rem; }
   .grid3, .steps { grid-template-columns: 1fr 1fr; }
-  .plans { grid-template-columns: 1fr; max-width: 34rem; }
+  .plans { grid-template-columns: 1fr; max-width: 34rem; row-gap: 1.75rem; }
   .strip ul { grid-template-columns: 1fr 1fr; }
   .top nav { display: none; }
   .top .by span { display: none; }
@@ -399,21 +404,21 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
         <span class="tag">Most chosen</span>
         <h3>On your server</h3>
         <p class="for">For one company, on a PC or server you already have</p>
-        <div class="price"><span>From</span><b>RM 90</b><span>per user, a month</span></div>
+        <div class="price"><small>From</small><b>RM 90</b><span>per user, a month</span></div>
         <ul><li>Minimum 5 users</li><li>Runs on your own PC or server with a graphics card (GPU)</li><li>Your data stays in your building</li><li>Setup, training, updates and support</li></ul>
         <a class="btn pri" href="mailto:idham.hakim@tfp.com.my?subject=TFP%20Vantage%3A%20on%20your%20server">Get started</a>
       </div>
       <div class="plan">
         <h3>Hosted by us</h3>
         <p class="for">For one company, with no server of your own</p>
-        <div class="price"><span>From</span><b>RM 2,500</b><span>a month + RM 90 per user</span></div>
+        <div class="price"><small>From</small><b>RM 2,500</b><span>a month, + RM 90 per user</span></div>
         <ul><li>Minimum 5 users</li><li>A private GPU server we run for you alone</li><li>Nothing to buy or maintain</li><li>Setup, training, updates and support</li></ul>
         <a class="btn sec" href="mailto:idham.hakim@tfp.com.my?subject=TFP%20Vantage%3A%20hosted">Talk to us</a>
       </div>
       <div class="plan">
         <h3>Enterprise</h3>
         <p class="for">For groups, larger teams and special needs</p>
-        <div class="price"><b>Custom</b><span>pricing, quoted for you</span></div>
+        <div class="price"><small>Price</small><b>Custom</b><span>quoted for your setup</span></div>
         <ul><li>Several B1 companies behind one sign-in</li><li>Each company's own data, chats and AI instructions</li><li>Roles per person and per company</li><li>On your servers or hosted by us</li><li>Priority support and on-site training</li></ul>
         <a class="btn sec" href="mailto:idham.hakim@tfp.com.my?subject=TFP%20Vantage%3A%20Enterprise">Talk to us</a>
       </div>
