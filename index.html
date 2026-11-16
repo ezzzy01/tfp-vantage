@@ -38,7 +38,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body { margin: 0; background: var(--bg); color: var(--text); font: 400 1.0625rem/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   -webkit-font-smoothing: antialiased; }
-img { max-width: 100%; display: block; }
+img { max-width: 100%; height: auto; display: block; }
+.shot img { width: 100%; }
 a { color: var(--brand); }
 a:hover { color: var(--brand-hover); }
 :focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
@@ -262,8 +263,8 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
     </div>
     <div class="shot">
       <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
-      <img class="themed" src="assets/img/02-chart-960.webp" srcset="assets/img/02-chart-960.webp 960w, assets/img/02-chart.webp 1440w" sizes="(max-width: 960px) 100vw, 640px"
-           data-dark="assets/img/02-chart-dark-960.webp 960w, assets/img/02-chart-dark.webp 1440w"
+      <img class="themed" src="assets/img/hero-chart-960.webp" srcset="assets/img/hero-chart-960.webp 960w, assets/img/hero-chart.webp 1568w" sizes="(max-width: 960px) 100vw, 640px"
+           data-dark="assets/img/hero-chart-dark-960.webp 960w, assets/img/hero-chart-dark.webp 1568w"
            width="960" height="600" alt="TFP Vantage answering 'Show me a chart of our monthly sales this year' with a bar chart of net sales by month and a short summary">
     </div>
   </div>
@@ -332,23 +333,23 @@ footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wr
       <button role="tab" id="t6" aria-controls="p6" aria-selected="false" tabindex="-1">On a phone</button>
     </div>
     <div class="panel" role="tabpanel" id="p1" aria-labelledby="t1"><figure class="shot">
-      <img loading="lazy" src="assets/img/03-top-customers-960.webp" srcset="assets/img/03-top-customers-960.webp 960w, assets/img/03-top-customers.webp 1440w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
+      <img loading="lazy" src="assets/img/03-top-customers-960.webp" srcset="assets/img/03-top-customers-960.webp 960w, assets/img/03-top-customers.webp 1920w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
            alt="An answer listing the top 10 customers this year with net sales, share and amount still to be paid">
       </figure><p class="note">"Who are our top 10 customers this year?" The table, the share of sales and what each still owes, with a suggested next step.</p></div>
     <div class="panel" role="tabpanel" id="p2" aria-labelledby="t2" hidden><figure class="shot">
-      <img loading="lazy" src="assets/img/05-dashboard-960.webp" srcset="assets/img/05-dashboard-960.webp 960w, assets/img/05-dashboard.webp 1440w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
+      <img loading="lazy" src="assets/img/05-dashboard-960.webp" srcset="assets/img/05-dashboard-960.webp 960w, assets/img/05-dashboard.webp 1920w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
            alt="The dashboard: sales, gross profit, invoices, customers who owe, open sales and purchase orders, sales by month and top customers">
       </figure><p class="note">This year's key figures at a glance, with a question box to ask about any of them.</p></div>
     <div class="panel" role="tabpanel" id="p3" aria-labelledby="t3" hidden><figure class="shot">
-      <img loading="lazy" src="assets/img/07-customer-960.webp" srcset="assets/img/07-customer-960.webp 960w, assets/img/07-customer.webp 1440w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
+      <img loading="lazy" src="assets/img/07-customer-960.webp" srcset="assets/img/07-customer-960.webp 960w, assets/img/07-customer.webp 1920w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
            alt="A customer page: sales this year and last, what they owe and how late, the last 12 months and unpaid invoices">
       </figure><p class="note">One page per customer: what they buy, what they owe and how late, and unpaid invoices. "Ask AI about this customer" in one click.</p></div>
     <div class="panel" role="tabpanel" id="p4" aria-labelledby="t4" hidden><figure class="shot">
-      <img loading="lazy" src="assets/img/06-customers-960.webp" srcset="assets/img/06-customers-960.webp 960w, assets/img/06-customers.webp 1440w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
+      <img loading="lazy" src="assets/img/06-customers-960.webp" srcset="assets/img/06-customers-960.webp 960w, assets/img/06-customers.webp 1920w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
            alt="The customer list with sales this year, balance, overdue amount, open orders and last document date">
       </figure><p class="note">Customers, suppliers, items and documents in searchable lists, each with an Excel download.</p></div>
     <div class="panel" role="tabpanel" id="p5" aria-labelledby="t5" hidden><figure class="shot">
-      <img loading="lazy" src="assets/img/05-dashboard-dark-960.webp" srcset="assets/img/05-dashboard-dark-960.webp 960w, assets/img/05-dashboard-dark.webp 1440w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
+      <img loading="lazy" src="assets/img/05-dashboard-dark-960.webp" srcset="assets/img/05-dashboard-dark-960.webp 960w, assets/img/05-dashboard-dark.webp 1920w" sizes="(max-width: 1200px) 100vw, 1150px" width="960" height="600"
            alt="The dashboard in dark mode">
       </figure><p class="note">Light or dark, following the device or chosen in Settings.</p></div>
     <div class="panel" role="tabpanel" id="p6" aria-labelledby="t6" hidden>

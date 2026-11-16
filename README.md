@@ -44,7 +44,7 @@ it again (or commit and push). GitLab republishes the page by itself within a mi
 | Prices | `RM 90`, `RM 2,500`, `RM 3,000` (pricing section, the note under the plans, and the FAQ answer "How much does it cost?") |
 | Plan details | `<div class="plan` (one block per plan) |
 | Questions and answers | `<details>` (one block per question) |
-| Screenshots | Replace the files in `assets/img/` with new ones of the same name and size (1440 x 900) |
+| Screenshots | Replace the files in `assets/img/` with new ones of the same name and size (1920 x 1200; "-960" copies 960 x 600, phone shots 780 x 1688; the top image is `hero-chart`) |
 
 ## Good to know
 
